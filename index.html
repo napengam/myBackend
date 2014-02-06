@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+/*************************************************************************
+myBackend.js 1.0 Copyright (c) 2013 Heinrich Schweitzer
+Contact me at hgs@hgsweb.de
+This copyright notice MUST stay intact for use.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
+
+The latest version can allways be found at http://hgsweb.de
+-->
+<html>
+    <head>
+        <title>Talking to Backend</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="../main.css" type="text/css" rel="stylesheet" >    
+        <script src="../moveToBottom.js"></script>
+        <script src="../myDialogs/myDialogs.js"></script>
+        <script src="myBackend.js"></script>
+    </head>
+    <body>    
+        <div class="content">
+            <div class="divhead" >                                                       
+                <a href="../index.php"> <img  src="../home.png"></a><i><b class="headLine">&nbsp;PHP &amp; JavaScript &amp; HTML &amp; CSS </b></i>
+                <b></b>
+                <span style="font-size:0.8rem;margin-left:40px"><b></b></span>                                     
+            </div>
+            <p class="title">Talking with any backend script using AJAX<br>
+            <p>
+                Special values for task:
+
+            <ul>
+                <li><b> error</b>: will simulate an error in the backend
+                <li><b> timeout</b>: backend will slepp for 5 seconds to trigger timeout on client (your) side
+                <li><b> chaos </b>:  a divition by 0 will happen in the backend
+                <li><b> bogus</b>:  a non Json respond will be send.
+            </ul>
+            <p>
+            </p> 
+            <div class="p">
+                <b>task:</b><br>
+                <input id=task type="text" size=10 maxlength=10 value="doit"> <br>
+                <b>message:</b><br>
+                <input id=msg type="text" size=40 maxlength=40 value="Hello"> <p>
+                    <button type="button" onclick='sendToBackend()'>Send to Backend</button>
+            </div>
+            <div class="p" id="div"></div>
+        </div>
+        <div id=foot class="foot"> 
+            <span class="footText">
+                &copy;2007 - 2013 <a href="http://athos-calling.com/hgs/html/index_1.php" style="color:white;">Heinrich Schweitzer</a> All rights reserved.
+            </span>             
+        </div>
+        <script>
+            moveToBottom('foot');
+            callPhp = myBackend();
+            callPhp.setTimeout(3000);
+            dialogs = myDialogs();
+            function sendToBackend() {
+                var task, message;
+                task = document.getElementById('task').value;
+                message = document.getElementById('msg').value;
+                callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
+                function respondFunc2(pkg)
+                {
+                    if (pkg.error !== '') {
+                        dialogs.myAlert(pkg.error);
+                    }
+                    document.getElementById('div').innerHTML = '<p>' + JSON.stringify(pkg);
+                }
+            }
+        </script>
+    </body>
+</html>
