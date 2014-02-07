@@ -1,14 +1,15 @@
 function myBackend()
 {
     'use strict';
-    var queue = [], timeOut = 1000, setVeil = true, veil = '', reveal={};
+    var queue = [], timeOut = 1000, setVeil = true, noQueue=false, veil = '', reveal={};
     //
     // these functions will be returned to the caller of this module
     //
     reveal = {
         useVeil: useVeil, // (true||false);
         callDirect: callDirect, //(backEndScript, sendPkg, respondAction)    
-        setTimeout: setTimeout //(milliSeconds) default=1000
+        setTimeout: setTimeout, //(milliSeconds) default=1000
+        setNoQueue: setNoQueue //(treu||false) 
     };
     //
     //  entire page is overlaid with this veil for the duration of an async request.
@@ -52,7 +53,7 @@ function myBackend()
         queue.push((JSON.stringify(sendPkg)));
         queue.push(respondAction);
         queue.push(backEnd);
-        if (queue.length === 3) {
+        if (queue.length === 3 || noQueue) {
             callCore(); // very first request
         }
     }
@@ -124,6 +125,9 @@ function myBackend()
     }
     function setTimeout(n) {
         timeOut = n;
+    }
+    function setNoQueue(flag) {
+        noQueue = flag;
     }
     function useVeil(flag) {
         setVeil = flag;//  true || false
