@@ -51,13 +51,15 @@ Here is an excerpt from index.html that shows the usage
 
 With the a call to 
 
-```  callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);``` 
+```  
+callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
+``` 
 
-here we send a php backend script cllaed backend-2.php,  parameters as JSON (requiered) and 
-te name of our respond function respondFunc2.
+we send a php backend script called backend-2.php,  parameters as JSON (requiered) and 
+the name of our respond function respondFunc2.
 When the respond function is called it is passed a JSON (requiered) package with the answer from the server.
 
-The definition and usage of the content of the JSON packages is up to you .
+The definition and usage/interpretation of the content of the JSON packages is up to you .
 
 Below is the part of the php backend file that decodes JSON in order to use the data within the php script
 ```
