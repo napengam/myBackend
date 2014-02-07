@@ -26,3 +26,43 @@ If you don't want to black the page call ```yourVar.useVeil(false)```
 By default the timeout for a single request is set to 1000ms.
 You can change this value by calling  ```yourVar.setTiemut(number)```
 
+
+Usage
+=====
+
+Here is an excerpt from index.html that shows the usage
+```
+            callPhp = myBackend();
+            callPhp.setTimeout(3000);        
+            function sendToBackend() {
+                var task, message;
+                task = document.getElementById('task').value;
+                message = document.getElementById('msg').value;
+                callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
+                function respondFunc2(pkg)
+                {
+                    if (pkg.error !== '') {
+                        dialogs.myAlert(pkg.error);
+                    }
+                    document.getElementById('div').innerHTML = '<p>' + JSON.stringify(pkg);
+                }
+            }
+  ```
+
+With the a call to 
+
+```  callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);``` 
+
+here we send a php backend script cllaed backend-2.php,  parameters as JSON (requiered) and 
+te name of our respond function respondFunc2.
+When the respond function is called it is passed a JSON (requiered) package with the answer from the server.
+
+The definition and usage of the content of the JSON packages is up to you .
+
+Below is the part of the php backend file that decodes JSON in order to use the data within the php script
+```
+$json = file_get_contents('php://input');
+$request = json_decode($json, true);
+```
+
+For the rest of the processing please have a look at backend-2.php

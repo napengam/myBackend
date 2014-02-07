@@ -70,10 +70,12 @@ The latest version can allways be found at http://hgsweb.de
             </span>             
         </div>
         <script>
-            moveToBottom('foot');
-            callPhp = myBackend();
-            callPhp.setTimeout(3000);
             dialogs = myDialogs();
+            moveToBottom('foot');
+            
+            
+            callPhp = myBackend();
+            callPhp.setTimeout(3000);        
             function sendToBackend() {
                 var task, message;
                 task = document.getElementById('task').value;
