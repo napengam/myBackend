@@ -21,7 +21,7 @@ While a request is sent and not finished an invisible veil is put
 on top of the html page to block any interaction by the user with the 
 page. This somehow mimics a synchronius request at least for the user. 
 
-If you don't want to black the page call ```yourVar.useVeil(false)```
+If you don't want to block the page call ```yourVar.useVeil(false)```
 
 By default the timeout for a single request is set to 1000ms.
 You can change this value by calling  ```yourVar.setTiemut(number)```
@@ -32,31 +32,34 @@ Usage
 
 Here is an excerpt from index.html that shows the usage
 ```
-            callPhp = myBackend();
-            callPhp.setTimeout(3000);        
-            function sendToBackend() {
-                var task, message;
-                task = document.getElementById('task').value;
-                message = document.getElementById('msg').value;
-                callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
-                function respondFunc2(pkg)
-                {
-                    if (pkg.error !== '') {
-                        dialogs.myAlert(pkg.error);
-                    }
-                    document.getElementById('div').innerHTML = '<p>' + JSON.stringify(pkg);
-                }
-            }
+callPhp = myBackend();
+callPhp.setTimeout(3000);        
+function sendToBackend() {
+     var task, message;
+     task = document.getElementById('task').value;
+     message = document.getElementById('msg').value;
+     callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
+     function respondFunc2(pkg)
+     {
+         if (pkg.error !== '') {
+             dialogs.myAlert(pkg.error);
+         }
+         document.getElementById('div').innerHTML = '<p>' + JSON.stringify(pkg);
+     }
+}
   ```
 
 With the a call to 
 
 ```  
-callPhp.callDirect('backend-2.php', {'task': task, 'message': message, 'sendValue': 22000}, respondFunc2);
+callPhp.callDirect('backend-2.php', 
+{'task': task, 'message': message, 'sendValue': 22000}, 
+respondFunc2);
 ``` 
 
-we send a php backend script called backend-2.php,  parameters as JSON (requiered) and 
-the name of our respond function respondFunc2.
+we send  parameters as JSON (requiered) to a php backend script called backend-2.php, and 
+set the name of our respond function respondFunc2 to be executed when the call is completed.
+
 When the respond function is called it is passed a JSON (requiered) package with the answer from the server.
 
 The definition and usage/interpretation of the content of the JSON packages is up to you .

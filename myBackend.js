@@ -9,7 +9,7 @@ function myBackend()
         useVeil: useVeil, // (true||false);
         callDirect: callDirect, //(backEndScript, sendPkg, respondAction)    
         setTimeout: setTimeout, //(milliSeconds) default=1000
-        setNoQueue: setNoQueue //(treu||false) 
+        setNoQueue: setNoQueue //(true||false) 
     };
     //
     //  entire page is overlaid with this veil for the duration of an async request.
@@ -54,7 +54,7 @@ function myBackend()
         queue.push(respondAction);
         queue.push(backEnd);
         if (queue.length === 3 || noQueue) {
-            callCore(); // very first request
+            callCore(); // very first request or no queueing
         }
     }
     //
