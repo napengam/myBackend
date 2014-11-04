@@ -3,6 +3,8 @@ myBackend
 
 script to talk to any backend using httpRequest and JSON
 
+A demo is locate here <a href='http://hgsweb.de/myBackend'>hgsweb.de/myBackend</a>
+
 Flow
 ====
 

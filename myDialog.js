@@ -7,43 +7,42 @@ function myDialogs() {
             cdDiv, // div for confirm dialog to hold the HTML below
             confirmDialog = ['<div  id="hgsmodc_veil" >',
                 '<span  id="hgsmodc_bbb">you should never see this</span><hr>',
-                '<div style="text-align:center"><input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em">',
+                '<div style="text-align:center">',
                 '<button id="modal_confirm_yes" tabindex=1 >Yes</button>',
                 '<button id="modal_confirm_no" tabindex=2 >No</button>',
-                '<input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em"></div>',
+                '</div>',
                 '</div>'].join(''),
             alDiv, //div for alert box to hold HTML below
             alertDialog = ['<div  id="hgsmoda_veil">',
                 '<span style="float:right;color:#ff6200;font-weight:bold">Alert<br></span>',
                 '<hr style="clear:both">',
                 '<span  id="hgsmoda_bbb"> you should never see this </span><hr>',
-                '<div style="text-align:center" ><input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em">',
+                '<div style="text-align:center" >',
                 '<button  id="hgsmoda_bbb_ok" tabindex=1 >OK</button>',
-                '<input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em;"></div>',
+                '</div>',
                 ''].join(''),
             prDiv, //div for prompt by eenter box to hold HTML below
             promptDialog = ['<div  id="hgsmodp_veil" style="text-align:center">',
                 '<span style="float:right;color:#ff6200;font-weight:bold">Prompt<br></span>',
                 '<hr style="clear:both">',
                 '<span  id="hgsmodp_bbb"> you should never see this </span><hr>',
-                '<div style="text-align:center"><input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em">',
+                '<div style="text-align:center">',
                 '<input id=hgsmodp_ccc type=text size=40 maxlength=40></div>',
                 '<div id=hgsmodp_ddd  style="text-align:center"><button  tabindex=1 >OK</button>',
-                '<input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em"> </div>'].join(''),
+                '</div>'].join(''),
             slDiv, //div for prompt by select box to hold HTML below
             selectDialog = ['<div  id="hgsmods_veil">',
                 '<span style="float:right;color:#ff6200;font-weight:bold">Prompt<br></span>',
                 '<hr style="clear:both">',
                 '<span  id="hgsmods_bbb"> you should never see this </span><hr>',
-                '<div style="text-align:center"><input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em">',
+                '<div style="text-align:center">',
                 '<select id=hgsmods_ccc  size=1></select></div><hr>',
                 '<div style="text-align:center"><br><button id=hgsmods_ddd  tabindex=1 >OK</button>',
-                '<input class=DuMmY_HGS type=text size=1 maxlength=1 style="font-size:0.1em">',
                 '</div>'].join('');
 
 
     function gebi(id) {
-        return document.getElementById(id);
+        return document.getElementById(id)
     }
 
     function vailOnClick(id) {
@@ -57,59 +56,23 @@ function myDialogs() {
         aDiv.id = id;
         aDiv.style.display = 'none';
 
-
         aDiv.className = 'divClass';
         aDiv.style.zIndex = 10;
         aDiv.style.position = 'absolute';
         aDiv.innerHTML = HTML;
-        aDiv.draggable = true;
-        aDiv.ondrag = function (e) {
-            this.style.top = e.clientY + 'px';
-            this.style.left = e.clientX + 'px';
-        };
-        aDiv.ondragend = function (e) {
-            this.style.top = e.clientY + 'px';
-            this.style.left = e.clientX + 'px';
-        };
+
         document.body.appendChild(aDiv);
-        dd = aDiv.querySelectorAll('.DuMmY_HGS');
-        if (dd.length === 2) {
-            dd[0].onfocus = function () {
-                dd[0].nextSibling.focus();
-            };
-            dd[1].onfocus = function () {
-                dd[1].previousSibling.focus();
-            };
-            dd[0].style.position = 'absolute';
-            dd[0].style.top = '-2000px';
-            dd[1].style.position = 'absolute';
-            dd[1].style.top = '-2000px';
-        }
+
         aDiv.onclick = function () {
             dd[0].focus();
         };
-
+        makeDrag(aDiv);
         return aDiv;
 
     }
-    function absPos(obj) {// return absolute x,y position of obj
-        var ob, pos = {};
-        pos.x = obj.offsetLeft;
-        pos.y = obj.offsetTop;
-        if (typeof pos.x === 'undefined') {
-            return {x: 0, y: 0};
-        }
-        ob = obj.offsetParent;
-        while (ob !== null && ob.tagName !== 'BODY') {
-            pos.x += ob.offsetLeft;
-            pos.y += ob.offsetTop;
-            ob = ob.offsetParent;
-        }
-        return pos;
-    }
 
     function positionDialog(id) {
-        var aDiv, x, xx, yy, y, cw, ch, ev = window.event, pos;
+        var aDiv, x, y, cw, ch;
         veil.style.visibility = 'visible';
         veil.style.zIndex = 5;
         aDiv = gebi(id);
@@ -125,13 +88,12 @@ function myDialogs() {
 
         aDiv.style.top = (y - ch) / 2 + 'px';
         aDiv.style.left = (x - cw) / 2 + 'px';
-
-        /*
-         * this will cover the entire screen
-         * Probably already created by myBackend.js
-         * 
-         */
     }
+    /*
+     * this will cover the entire screen
+     * Probably already created by myBackend.js
+     * 
+     */
     veil = document.getElementById('veilFromBackend');
     if (veil === null) {
         veil = document.createElement('DIV');
@@ -140,7 +102,7 @@ function myDialogs() {
         veil.style.width = '100%';
         veil.style.zIndex = -1;
         veil.style.background = 'white';
-        veil.style.visibility = 'hidden';
+        veil.style.visibility =  'hidden';
         veil.style.position = 'fixed';
         veil.style.top = '0px';
         veil.style.left = '0px';
@@ -158,46 +120,39 @@ function myDialogs() {
         divClass.innerHTML = '.divClass{width:auto;background:#dddbd1; border: 1px solid rgb(88, 121, 224);z-index:2000;' +
                 'border-radius: 5px;padding:8px; }';
         document.getElementsByTagName('head')[0].appendChild(divClass);
-        /*
-         * create a dummy class for locating elements 
-         */
-        divClass = document.createElement('style');
-        divClass.type = 'text/css';
-        divClass.innerHTML = '.DuMmY_HGS{/*keep emtpy*/}';
-        document.getElementsByTagName('head')[0].appendChild(divClass);
-        /*
-         * create  dialog boxes
-         */
-        cdDiv = createDialogBox('hgsmodc_aaa', confirmDialog);
-        alDiv = createDialogBox('hgsmoda_aaa', alertDialog);
-        prDiv = createDialogBox('hgsmodp_aaa', promptDialog);
-        slDiv = createDialogBox('hgsmods_aaa', selectDialog);
-    } else {
-        cdDiv = gebi('hgsmodc_aaa');
-        alDiv = gebi('hgsmoda_aaa');
-        prDiv = gebi('hgsmodp_aaa');
-        slDiv = gebi('hgsmods_aaa');
     }
+    /*
+     * Fetch or create the dialogboxes
+     * 
+     */
+    alDiv = gebi('hgsmoda_aaa');
+    alDiv === null ? alDiv=createDialogBox('hgsmoda_aaa', alertDialog) : '';
+    cdDiv = gebi('hgsmodc_aaa');
+    cdDiv === null ? cdDiv=createDialogBox('hgsmodc_aaa', confirmDialog) : '';
+    prDiv = gebi('hgsmodp_aaa');
+    prDiv === null ? prDiv=createDialogBox('hgsmodp_aaa', promptDialog) : '';
+    slDiv = gebi('hgsmods_aaa');
+    slDiv === null ? slDiv=createDialogBox('hgsmods_aaa', selectDialog) : '';
     /*
      * The action within the alert box is just an OK button
      * In fact if you click anywhere within the alert box it will
      * disapear.
      */
     function myAlert(a_text) {
-
+        a_text = htmlentity(a_text);
         if (veil) {
             gebi('hgsmoda_bbb').innerHTML = '';
-            gebi('hgsmoda_bbb').innerHTML = a_text.replace(/\n/gi, "<br>");
+            gebi('hgsmoda_bbb').innerHTML = '<b>' + a_text.replace(/\n/gi, "<br>") + '</b>';
             positionDialog('hgsmoda_aaa');
 
-            alDiv.onclick = function () {
+            gebi('hgsmoda_bbb_ok').onclick = function () {
                 alDiv.style.display = 'none';
                 veil.style.zIndex = -1;
                 veil.style.visibility = 'hidden';
                 window.onkeydown = keyDown;
             };
             gebi('hgsmoda_bbb_ok').focus();
-            vailOnClick('hgsmoda_bbb_ok');
+            //vailOnClick('hgsmoda_bbb_ok');
             window.onkeydown = handleKeyDown;
         } else {
             alert(a_text); // fall back
@@ -212,6 +167,7 @@ function myDialogs() {
      */
     function myConfirm(a_text, callYes, callNo) {
         var ret;
+        //a_text = htmlentity(a_text);
         if (veil) {
             positionDialog('hgsmodc_aaa');
             gebi('hgsmodc_bbb').innerHTML = a_text.replace(/\n/gi, "<br>");
@@ -249,6 +205,7 @@ function myDialogs() {
      * 
      * */
     function myPrompt(a_text, defaultValue, callOnEnter) {
+        //a_text = htmlentity(a_text);
         if (veil) {
             positionDialog('hgsmodp_aaa');
             gebi('hgsmodp_bbb').innerHTML = a_text.replace(/\n/gi, "<br>");
@@ -273,6 +230,7 @@ function myDialogs() {
      * 
      * */
     function myPromptSelect(a_text, options, callOnSelect) {
+        //a_text = htmlentity(a_text);
         var n, i, sel, o0, o1, v, o, d, op, that;
         if (veil) {
             positionDialog('hgsmods_aaa');
@@ -302,8 +260,8 @@ function myDialogs() {
                 }
                 op = document.createElement("option");
                 op.value = v;
-                op.text = o;
-                op.title = d;
+                op.text = (o);
+                op.title = (d);
                 sel.options.add(op);
             }
             sel.selectedIndex = 0;
@@ -327,7 +285,7 @@ function myDialogs() {
         if ([9, 13, 32, 27].indexOf(keyCode) === -1) {
             // Don't do work on keys we don't care about.
             return;
-        }    
+        }
         if (keyCode === 9) {
             if (typeof e.stopPropagation === 'function') {
                 e.stopPropagation();
@@ -336,6 +294,14 @@ function myDialogs() {
                 window.event.cancelBubble = true;
             }
         }
+    }
+    function htmlentity(value) {
+        value = value.replace(/&/gi, "&amp;");
+        value = value.replace(/</gi, "&lt;");
+        value = value.replace(/>/gi, "&gt;");
+        value = value.replace(/"/gi, "&quot;");
+        value = value.replace(/'/gi, "&#039;");
+        return value;
     }
     /*
      * Here we  reveal the dialogs/functions to the caller
