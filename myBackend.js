@@ -1,7 +1,7 @@
 function myBackend()
 {
     'use strict';
-    var queue = [], timeOut = 1000, setVeil = true, noQueue=false, veil = '', reveal={};
+    var queue = [], timeOut = 1000, setVeil = true, noQueue = false, veil = '', reveal = {}, keyDown = window.onkyedown;
     //
     // these functions will be returned to the caller of this module
     //
@@ -28,21 +28,25 @@ function myBackend()
         veil.style.position = 'fixed';
         veil.style.top = '0px';
         veil.style.left = '0px';
-        veil.style.opacity = 0.2;
+        
         veil.style.textalign = 'left';
-        veil.innerHTML = '<hr style="margin:0;padding:0;width:1px;height:2000px">';
+        veil.innerHTML = '<hr style="margin:0;padding:0;width:100px;height:2000px">';
         document.body.appendChild(veil);
     }
     function veilOn() {
         if (veil && setVeil) {
+            window.onkeydown = handleKeyDown;
             veil.style.visibility = 'visible';
-            veil.style.zindex = 5;
+            veil.style.background = 'white';
+            veil.style.opacity = 0.0;
+            veil.style.zIndex = 5;
         }
     }
     function veilOff() {
         if (veil && setVeil) {
+            window.onkeydown = keyDown;
             veil.style.visibility = 'hidden';
-            veil.style.zindex = -1;
+            veil.style.zIndex = -1;
         }
     }
     //
@@ -121,6 +125,21 @@ function myBackend()
             veilOff();
             respondAction({'error': e});
             callCore();// process any remaining requests in queue
+        }
+    }
+    function handleKeyDown(e) {
+        var keyCode = e.keyCode || e.which;
+        if ([9, 13, 32, 27].indexOf(keyCode) === -1) {
+            // Don't do work on keys we don't care about.
+            return;
+        }
+        if (keyCode === 9) {
+            if (typeof e.stopPropagation === 'function') {
+                e.stopPropagation();
+                e.preventDefault();
+            } else if (window.event && window.event.hasOwnProperty('cancelBubble')) {
+                window.event.cancelBubble = true;
+            }
         }
     }
     function setTimeout(n) {
