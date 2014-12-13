@@ -138,6 +138,18 @@ code{
     border:0px solid black;
    
 }
+.moveHandle{
+    word-spacing: normal;
+    border-collapse:collapse;
+    margin:0;
+    margin-bottom:4px;
+    cursor:move;
+    width:100%;
+    padding-bottom:0px;
+    background-image: url("stripes.gif");
+    text-align:right;
+    color:#ff6200;font-weight:bold
+}
 .trans {
 -webkit-transition:All 1s ease;
 -moz-transition:All 1s ease;

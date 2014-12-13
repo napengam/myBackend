@@ -119,20 +119,10 @@ function myBackend()
         // is finished or timed out;
         //   
         veilOn();
-        try {
-            request.send(sendPkg);
-        } catch (e) {
-            veilOff();
-            respondAction({'error': e});
-            callCore();// process any remaining requests in queue
-        }
+        request.send(sendPkg);
     }
     function handleKeyDown(e) {
-        var keyCode = e.keyCode || e.which;
-        if ([9, 13, 32, 27].indexOf(keyCode) === -1) {
-            // Don't do work on keys we don't care about.
-            return;
-        }
+        var keyCode = e.keyCode || e.which;       
         if (keyCode === 9) {
             if (typeof e.stopPropagation === 'function') {
                 e.stopPropagation();
