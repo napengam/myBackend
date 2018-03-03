@@ -107,7 +107,14 @@ function myDialogs() {
         };
     }
     function createDialogBox(id, HTML) {
-        var to, le, aDiv = document.createElement('DIV');
+        var to, le, aDiv;
+
+
+        aDiv=document.getElementById(id);
+        if (aDiv) {
+            return aDiv;
+        }
+        aDiv = document.createElement('DIV');
         aDiv.id = id;
         aDiv.style.display = 'none';
         aDiv.className = 'divClass' + t;

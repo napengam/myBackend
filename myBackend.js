@@ -54,11 +54,9 @@ function myBackend(v)
             queue.length = 0;
             return;
         }
-        qelem = queue.shift();
-
-        sendPkg = qelem.sendPkg;
-        respondAction = qelem.respondAction;
-        backEnd = qelem.backEnd;
+        sendPkg = queue[0].sendPkg;
+        respondAction = queue[0].respondAction;
+        backEnd = queue[0].backEnd;
 
         request.open("POST", backEnd, true);
         request.setRequestHeader("Content-Type", "application/json");
@@ -76,6 +74,7 @@ function myBackend(v)
         var js;
         if (this.readyState !== 4 || this.status !== 200) {
             if (this.readyState === 4) {
+                qelem = queue.shift();
                 veil.veilOff();
                 respondAction({'error': this.responseText});
                 callCore();// process any remaining requests in queue
@@ -85,6 +84,7 @@ function myBackend(v)
         // request comes back, take away veil. to allow user action
         this.onreadystatechange = '';
         veil.veilOff();
+        qelem = queue.shift();
         try {
             js = JSON.parse(this.responseText);
         } catch (e) {
@@ -97,6 +97,7 @@ function myBackend(v)
     }
     function timedOut() {
         // request timed out, take away veil.;
+        qelem = queue.shift();
         veil.veilOff();
         request.abort();
         respondAction({'error': 'Backend script ' + backEnd + ' timed out after ' + timeOut + ' milliseconds: no responds '});
