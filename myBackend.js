@@ -2,7 +2,7 @@ function myBackend(v)
 {
     'use strict';
     var
-            qelem, request, backEnd, sendPkg, respondAction,
+            request, backEnd, sendPkg, respondAction,
             queue = [], timeOut = 0,
             setVeil = true, noQueue = false,
             veil = myVeil(), reveal = {};
@@ -61,7 +61,9 @@ function myBackend(v)
         // activate veil. to avoid any user interaction until request 
         // is finished or timed out;
         //   
-        veil.veilOn();
+        if (setVeil) {
+            veil.veilOn();
+        }
         request.send(sendPkg);
     }
     function onChange() {
@@ -78,7 +80,7 @@ function myBackend(v)
         // request comes back, take away veil. to allow user action
         this.onreadystatechange = '';
         veil.veilOff();
-        queue.shift();
+        queue.shift(); 
         try {
             js = JSON.parse(this.responseText);
         } catch (e) {
