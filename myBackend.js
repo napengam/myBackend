@@ -20,20 +20,13 @@ function myBackend(v)
     }
     request = new XMLHttpRequest();
 
-    //
-    // send very first request imediatly
-    // then queue requests
-    //
+
     function callDirect(backEnd, sendPkg, respondAction) {
-
-
-        var qelem = {
+        queue.push({
             'backEnd': backEnd,
             'sendPkg': JSON.stringify(sendPkg),
             'respondAction': respondAction
-        };
-
-        queue.push(qelem);
+        });
         if (queue.length === 1 || noQueue) {
             callCore(); // very first request or no queueing
         }
@@ -44,16 +37,17 @@ function myBackend(v)
     function callCore() {
 
         if (queue.length === 0) {
-           
+
             return;
         }
-        //////////////////////////////////////////////////////////////
-        ////////////////// here we go ////////////////////////////////
-        //////////////////////////////////////////////////////////////
+
         if (!request || (request.readyState !== 4 && request.readyState !== 0)) {
             queue.length = 0;
             return;
         }
+        //************************************************
+        // process first request in queue
+        //************************************************
         sendPkg = queue[0].sendPkg;
         respondAction = queue[0].respondAction;
         backEnd = queue[0].backEnd;
@@ -74,7 +68,7 @@ function myBackend(v)
         var js;
         if (this.readyState !== 4 || this.status !== 200) {
             if (this.readyState === 4) {
-                qelem = queue.shift();
+                queue.shift();
                 veil.veilOff();
                 respondAction({'error': this.responseText});
                 callCore();// process any remaining requests in queue
@@ -84,7 +78,7 @@ function myBackend(v)
         // request comes back, take away veil. to allow user action
         this.onreadystatechange = '';
         veil.veilOff();
-        qelem = queue.shift();
+        queue.shift();
         try {
             js = JSON.parse(this.responseText);
         } catch (e) {
@@ -97,7 +91,7 @@ function myBackend(v)
     }
     function timedOut() {
         // request timed out, take away veil.;
-        qelem = queue.shift();
+        queue.shift();
         veil.veilOff();
         request.abort();
         respondAction({'error': 'Backend script ' + backEnd + ' timed out after ' + timeOut + ' milliseconds: no responds '});
